@@ -1,0 +1,29 @@
+CMD命令行工具介绍
+CMD 是 Windows 操作系统自带的一个命令解释程序，也被称为命令提示符(Command Prompt),它允许用户通过输入各种命令来执行操作系统级别的操作。CMD 提供了一个基于文本的界面，用于运行批处理脚本、管理文件和目录以及与其他软件交互。
+
+功能概述
+CMD 支持多种内置命令，这些命令可以帮助用户完成诸如文件管理和系统配置的任务。以下是 CMD 的一些主要功能：
+
+文件和目录管理
+用户可以通过 CMD 执行文件复制、删除、移动等基本操作。例如,copy 命令可以用来复制文件,而 del 或 erase 则可用于删除文件5。
+
+网络诊断
+CMD 中包含了多个用于网络诊断的工具，如 ping 和 tracert。ping 用于测试主机之间的连通性，而 tracert 可以显示数据包到达目标地址所经过的路由6。
+
+环境变量设置
+使用 set 命令可以在当前会话中临时修改或创建环境变量。这对于调试应用程序或者调整系统的某些行为非常有用7。
+
+任务调度与进程管理
+CMD 还支持任务计划器的相关命令，比如 at 和 schtasks,它们能够安排在特定时间自动运行某个程序或脚本。tasklist 和 taskkill 分别用于查看正在运行的进程列表及其终止操作8。
+
+集成其他工具和服务
+如引用提到的内容所示,除了基础的功能外,CMD 还能作为接口调用更专业的第三方或平台专用工具，像 SQL Server 的 sqlcmd 工具就可通过 CMD 启动来进行数据库维护工作；
+同样地，在 Android 开发领域里，开发者也可以利用 adb 等 SDK 命令行组件经由 CMD 来实现设备操控等功能。
+
+下面给出一段简单的 Python 脚本来演示如何借助 subprocess 库从 Python 程序内部调用 CMD 并获取其输出结果：
+import subprocess
+def run_cmd(command):
+result = subprocess.run(command, shell=True, capture_output=True, text=True)
+return result.stdout.strip()
+output = run_cmd('dir')
+print(output)
