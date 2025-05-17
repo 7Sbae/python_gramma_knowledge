@@ -1,0 +1,78 @@
+sep是print()函数的关键参数，用于控制多个输出对象之间的分隔符。以下是其核心作用和使用场景的详细说明：
+
+一、基础作用
+默认行为
+当print()输出多个对象时，默认用空格分隔：
+print("Python", 3.12, True) # 输出：Python 3.12 True
+
+自定义分隔符
+通过sep='符号'修改分隔方式：
+print("Python", 3.12, True, sep="|") # 输出：Python|3.12|True
+
+二、典型使用场景
+1. 格式化输出
+日期拼接
+将年月日连接为特定格式：
+print(2023, 10, 1, sep="-") # 输出：2023-10-1
+
+路径生成
+组合文件路径（注意需手动处理斜杠）：
+print("C:", "User", "docs", sep="\\") # 输出：C:\User\docs
+
+2. 数据格式化
+CSV格式生成
+快速生成逗号分隔值：
+name, age = "Alice", 30
+print(name, age, sep=",") # 输出：Alice,30
+
+对齐显示
+用等号对齐键值对：
+print("Name:", "Bob", sep="\t", end=" | ")
+print("Age:", 25, sep="\t")
+# 输出：Name: Bob | Age: 25
+
+3. 特殊需求
+清除分隔符
+设置sep=''实现无缝连接：
+print("P", "y", "t", "h", "o", "n", sep="") # 输出：Python
+
+多语言支持
+适应不同语言的分隔习惯：# 中文环境下常用顿号分隔
+print("苹果", "香蕉", "橘子", sep="、") # 输出：苹果、香蕉、橘子
+
+三、进阶用法
+与文件输出结合
+配合file参数写入文件时控制分隔格式3:
+with open("log.txt", "w") as f:
+print("ERROR", "2023-10-01", "File not found", sep="::", file=f)# 文件内容：ERROR::2023-10-01::File not found
+
+动态分隔符
+根据条件改变分隔方式：
+debug_mode = True
+sep_char = " >> " if debug_mode else " "
+print("DEBUG", "Variable x=5", sep=sep_char)
+
+四、注意事项
+与end参数的区别
+sep控制同一print()语句内元素的分隔
+end控制不同print()语句间的结尾符（默认换行）
+
+类型兼容性
+所有输出对象都会被自动转换为字符串后再拼接：
+print(1+2j, [1,2], {"a":1}, sep=" → ")# 输出：(1+2j) → [1, 2] → {'a': 1}
+
+性能考量
+高频调用时,优先使用str.join()方法：# 更高效的列表拼接方式
+items = ["A", "B", "C"]
+print("|".join(items)) # 输出：A|B|C
+
+五、对比示例
+代码示例 输出结果
+print(1, 2, 3) `
+1 2 3`
+print(1, 2, 3, sep=',') `
+1,2,3`
+print(1, 2, 3, sep='') `
+123`
+print(1, 2, 3, sep=' -> ') `
+1 -> 2 -> 3

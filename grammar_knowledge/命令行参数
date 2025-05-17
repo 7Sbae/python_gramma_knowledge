@@ -1,0 +1,90 @@
+1. 什么是命令行参数
+命令行参数是指在运行脚本时，通过命令行传入到程序中的附加信息。这些参数可以让脚本变得更加灵活和动态化。例如，在执行以下命令时：
+Bash
+python my_script.py --input input.txt --output output.txt
+--input input.txt 和 --output output.txt 即为命令行参数。
+
+2. 命令行参数解析的方式
+(1) 使用 SYS.ARGV
+sys.argv 是 Python 提供的一个列表变量，包含了所有的命令行参数。第一个元素通常是脚本名称（即 sys.argv[0]），后续的元素则是传递给脚本的参数。
+import sys
+if __name__ == "__main__":
+print(f"脚本名: {sys.argv[0]}")
+for i, arg in enumerate(sys.argv[1:], start=1):
+print(f"参数{i}: {arg}")
+运行结果： 假设运行如下命令：
+Bash
+python script.py param1 param2
+输出将是：
+脚本名: script.py
+参数1: param1
+参数2: param2
+这种方式简单易用，但对于复杂的参数需求不够友好。
+
+(2) 使用 GETOPT 模块
+getopt 模块适用于简单的短横线 (-) 或双横线 (--) 参数解析。它能够处理带值或无值的选项。
+import getopt
+import sys
+def main(argv):
+try:
+opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
+except getopt.GetoptError:
+print('usage: test.py -i <inputfile> -o <outputfile>')
+sys.exit(2)
+for opt, arg in opts:
+if opt == '-h':
+print('test.py -i <inputfile> -o <outputfile>')
+sys.exit()
+elif opt in ("-i", "--ifile"):
+input_file = arg
+elif opt in ("-o", "--ofile"):
+output_file = arg
+print(f'输入文件: {input_file}')
+print(f'输出文件: {output_file}')
+if __name__ == "__main__":
+main(sys.argv[1:])
+优点：适合小型项目，易于理解。
+缺点:无法自动生成功能完善的帮助文档4。
+
+(3) 使用 ARGPARSE 模块
+argparse 是 Python 官方推荐的命令行参数解析工具，功能强大且易于扩展。它可以轻松定义各种类型的参数，并自动生成详细的帮助信息。
+基本流程：
+导入模块；
+创建 ArgumentParser 对象；
+添加参数；
+解析参数。
+import argparse
+def main():
+parser = argparse.ArgumentParser(description='计算两个数字的乘积')
+parser.add_argument('-a', '--factor-a', type=int, help='其中一个因子A', required=True)
+parser.add_argument('-b', '--factor-b', type=int, help='另一个因子B', required=True)
+
+args = parser.parse_args()
+result = args.factor_a * args.factor_b
+print(f'{args.factor_a} * {args.factor_b} = {result}')
+if __name__ == '__main__':
+main()
+运行结果： 假设运行如下命令：
+Bash
+python script.py -a 5 -b 7
+输出将是：
+5 * 7 = 35
+
+特点：
+支持必选参数和可选参数；
+自动生成帮助信息；
+自动检测非法参数并给出提示5。
+
+(4) 第三方库
+对于更高级的功能需求，可以考虑使用一些流行的第三方库，如 docopt 和 Click。
+docopt:
+基于文档字符串生成命令行接口，非常适合快速开发 CLI 工具。
+Click:
+更加现代化的设计理念，支持嵌套命令、多级菜单等功能。
+
+3. 总结对比表
+特性 sys.argv getopt argparse 第三方库(如 Click)
+易用性 简单但有限制 较低 高 很高
+复杂参数支持 不支持 有限 强大 极强
+自动生成帮助信息 否 否 是 是
+错误提示 手动实现 手动实现 内置完善的支持 内置完善的支持

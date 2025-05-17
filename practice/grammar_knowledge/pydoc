@@ -1,0 +1,70 @@
+1. 定义
+Pydoc 是 Python 自带的一个模块，它利用了 Python 文档的约定以及导入、继承等相关知识1。它的主要功能是生成和显示关于其他模块的信息,
+既可以以纯文本的形式在终端中展示，也可以生成更易读的 HTML 格式的文档。
+
+2. 使用方法
+(1)通过交互式解释器使用 HELP() 函数
+help() 函数实际上是基于 pydoc 模块实现的，在交互式环境中可以直接调用它来获取对象的帮助信息。
+import sys
+help(sys) # 显示 sys 模块的相关帮助信息
+这段代码展示了如何通过 help() 查看 sys 模块的内容2。
+
+(2)通过命令行运行 PYDOC
+除了在交互式解释器中使用外，还可以通过命令行直接运行 pydoc 来查看某个模块的文档。
+
+查看单个模块
+运行以下命令可以查看指定模块（如 os 模块）的文档：
+Bash
+python -m pydoc os
+启动 HTTP 服务器
+可以通过以下命令启动一个本地 HTTP 服务器，从而以网页形式浏览所有可用模块的文档：
+Bash
+python -m pydoc -p 1234
+执行后会在浏览器中打开地址 http://localhost:1234/,用户可以从这里访问所有的模块文档4。
+
+(3)生成 HTML 文档
+如果需要将某模块的文档保存为静态 HTML 文件以便离线查阅，可以使用 -w 参数。
+Bash
+python -m pydoc -w requests
+这条命令会生成一个名为 requests.html 的文件，其中包含了 requests 模块的所有文档信息3。
+
+(4)搜索关键字
+当不确定具体模块名称时，可以通过 pydoc 提供的关键字搜索功能找到相关内容。
+Bash
+python -m pydoc modules keyword
+这里的 keyword 是要查找的关键字,modules 表示仅限于模块范围内的搜索1。
+
+示例综合应用
+假设有一个自定义模块 my_module.py,内容如下：
+def add(a, b):
+"""Return the sum of two numbers."""
+return a + b
+可以通过以下方式查看其文档：
+交互式环境
+import my_module
+help(my_module.add)
+
+命令行工具
+Bash
+python -m pydoc my_module
+
+生成 HTML 文档
+Bash
+python -m pydoc -w my_module
+以上三种方式分别适用于不同场景下的文档查询需求。
+
+要使用 pydoc,你可以在命令行中运行以下命令:
+pydoc module_name
+
+其中 module_name 是你想要查看文档的模块的名称。
+例如，如果你想查看 os 模块的文档,你可以运行:
+pydoc os
+
+如果你想查看所有可用的模块,你可以运行:
+pydoc modules
+
+如果你想查看所有可用的标准库模块,你可以运行:
+pydoc stdlib
+
+如果你想查看所有可用的第三方库模块,你可以运行:
+pydoc thirdparty

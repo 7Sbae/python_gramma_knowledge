@@ -1,0 +1,61 @@
+方法是指绑定到特定对象上的函数。它是面向对象编程的核心概念之一,用于操作对象的状态或执行与对象相关的功能
+
+1. 什么是方法
+方法是一种特殊的函数,它总是属于某个类或实例,并且可以通过对象来调用。方法的第一参数通常是self(对于实例方法),表示当前的对象实例
+
+2. 方法的主要分类
+(A) 实例方法
+实例方法是最常见的一种方法类型,它需要接收一个隐含的参数——即实例本身(通常命名为self)。通过实例方法可以访问并修改实例变量以及调用其他实例方法
+class Person:
+def __init__(self, name):
+self.name = name # 初始化实例变量
+def introduce(self):
+print(f"My name is {self.name}") # 使用 self 访问实例变量
+person = Person("Alice")
+person.introduce() # 输出: My name is Alice
+introduce() 是一个典型的实例方法，它依赖于实例变量 name 来完成其功能。
+
+(B) 静态方法
+静态方法不依赖任何实例状态，也不需要访问实例变量或类变量。它可以像普通函数一样工作，只是位于类的命名空间内。定义静态方法时需使用装饰器 @staticmethod。
+class MathUtils:
+@staticmethod
+def add(x, y):
+return x + y # 不依赖实例或类的状态
+result = MathUtils.add(3, 5)
+print(result) # 输出: 8
+这里,add() 方法完全独立于类的具体实现细节,仅仅提供了一个工具性质的功能1。
+
+类方法
+类方法类似于静态方法,但它会接收到一个指向类本身的隐含参数(通常命名为cls)。这使得类方法能够访问或修改类级别的属性。
+class Counter:
+count = 0 # 定义类变量
+@classmethod
+def increment(cls):
+cls.count += 1 # 修改类变量
+return cls.count
+Counter.increment()
+print(Counter.count) # 输出: 1
+increment() 是一个类方法，负责更新整个类共享的数据成员 count3。
+
+3. 方法的作用
+提供封装机制：将数据和行为组合在一起，隐藏内部复杂性。
+支持继承和多态：子类可以通过重写父类的方法来自定义行为。
+增强代码复用性：通过抽象公共逻辑为方法，减少重复编码。
+
+4. 特殊方法（魔术方法）
+Python 还支持一系列内置的特殊方法（也称为魔术方法），这些方法以双下划线开头和结尾（如 __init__, __str__ 等），主要用于定制类的行为。
+构造函数 __init__: 在创建新实例时自动调用，用于初始化对象属性。
+字符串化 __str__: 返回对象的人类可读字符串描述。
+class Book:
+def __init__(self, title):
+self.title = title
+
+def __str__(self):
+return f"Book({self.title})"
+book = Book("Python Programming")
+print(book) # 输出: Book(Python Programming)
+
+5. 方法与其他组件的关系
+实例变量: 方法可以直接访问所属实例的变量，前提是通过 self 参数引用。
+类变量: 对于全局范围内的共享资源，可通过类名或者 cls 参数间接访问。
+局部变量: 方法体内声明的临时存储单元，在离开作用域后会被销毁。

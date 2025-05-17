@@ -1,0 +1,46 @@
+1. 基础用法
+input() 函数用于接收用户的键盘输入，默认返回的是字符串类型。如果需要其他数据类型，则需手动转换。
+name = input("请输入您的名字：")
+print(f"欢迎您，{name}")
+此代码片段会提示用户输入其名字，并将其存储在变量 name 中。
+
+2. 数值计算
+当需要处理数值型输入时，可以结合内置函数如 int() 或 float() 将字符串转换为相应的数值类型。
+height = float(input("请输入您的身高（米）："))
+weight = float(input("请输入您的体重（千克）："))
+bmi = weight / (height ** 2)
+print(f"您的BMI指数为:{bmi:.2f}")
+这里演示了如何让用户输入浮点数并进行 BMI 计算。
+
+3. 多值输入
+有时可能希望一次性接受多个参数作为输入，这可以通过 split() 方法配合列表解析实现。
+numbers = list(map(int, input("请输入一系列整数（逗号分隔）：").split(',')))
+average = sum(numbers) / len(numbers)
+print(f"您输入的平均值是：{average}")
+该例子允许用户输入一串由逗号分割的数字,并自动求取这些数字的均值1。
+
+4. 循环验证输入合法性
+为了确保接收到合法有效的数据，可以在循环结构中加入条件判断直到满足为止才退出。
+while True:
+choice = input("请选择一项操作(yes/no): ").lower().strip()
+if choice in ['yes', 'no']:
+break
+print("输入错误，请重新尝试！")
+if choice == "yes":
+print("已确认执行...")
+else:
+print("取消操作...")
+上述脚本展示了一个简单的方式去反复询问直至获得预期的回答2。
+
+5. 实际应用场景——权限校验
+假设我们正在构建一个小游戏，其中涉及年龄限制检查：
+min_age = 18
+try:
+user_age = int(input("请问玩家的实际年龄是多少岁？ "))
+if user_age >= min_age:
+print("恭喜达到参与资格！")
+else:
+print("很遗憾，未达规定最低年龄标准。")
+except ValueError:
+print("警告：请输入正确的阿拉伯数字形式的年龄！")
+在此案例里不仅实现了基本的功能需求还考虑到了异常情况下的友好反馈。

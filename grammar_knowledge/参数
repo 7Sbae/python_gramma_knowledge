@@ -1,0 +1,56 @@
+函数参数是连接函数内部逻辑与外部世界的关键桥梁。它们不仅决定了函数的行为模式，还影响着代码的灵活性、可读性和复用性。
+
+1. 位置参数
+位置参数是最常见的参数类型，它严格按照定义顺序传递值给函数内的对应变量。如果调用时缺少必要参数，则会引发异常。
+def greet(name, greeting="Hello"):
+print(f"{greeting}, {name}")
+greet("Alice", "Hi") # Hi, Alice
+“Alice” 和 “Hi” 按照位置依次分配给了 name 和 greeting 变量。
+
+2. 关键字参数
+不同于位置参数依赖于次序，关键字参数允许通过显式的名称关联值，因此即使打乱顺序也能正常运行。
+greet(greeting="Good morning", name="Bob") # Good morning, Bob
+这种方式特别适合具有多个可选配置项的情况,使意图更加清晰明了1。
+
+3. 默认参数
+为了简化接口设计，默认参数提供了预设选项，只有当用户希望改变该设定时才需额外指定新值。
+def connect(host="localhost", port=8080):
+print(f"Connecting to {host}:{port}")
+connect(port=9090) # Connecting to localhost:9090
+然而需要注意的是,对于涉及可变对象(如列表或字典)作为默认值的情,，应谨慎处理潜在陷阱3。
+
+4. **可变长度参数 (*ARGS 和 KWARGS)
+(A) *ARGS - 接收任意数量的位置参数
+某些场景下无法提前确定具体会有多少个输入项，此时可以利用星号(*)标记收集剩余部分作为一个元组对待。
+def sum_all(*numbers):
+total = sum(numbers)
+return total
+result = sum_all(1, 2, 3, 4) # 结果为10
+print(result)
+此处无论传入几个整数都会被妥善打包进名为 numbers 的容器里加以计算。
+
+(B) **KWARGS - 处理不定数目关键词键值对
+类似的还有双星号(**)，专门用来捕获以字典形式呈现的一系列命名实体。
+def display_info(**details):
+for key, value in details.items():
+print(f"{key}: {value}")
+display_info(Name='Charlie', Age=25, City='New York')
+# Name: Charlie
+# Age: 25
+# City: New York
+这种方法非常适合构建动态属性集合作业环境4。
+
+5. *强制命名参数 (/ 和 )
+从Python 3.8 开始引入了一种新的语法糖 /, 表示左侧均为仅限位参,相对地右方则限定必须采用kwarg方式供给。
+def divide(a, b, /, operation='divide'):
+if operation == 'multiply':
+return a*b
+elif operation == 'subtract':
+return a-b
+else:
+return a/b
+# 下面这样写就会报错 TypeError: divide() takes no keyword arguments on first two params.
+# divide(a=10,b=2)
+outcome = divide(10, 2, operation='multiply') # 正确做法
+print(outcome) # 输出应该是20
+上述例子展示了如何强制区分positional-only vs keyword-only parameters2.

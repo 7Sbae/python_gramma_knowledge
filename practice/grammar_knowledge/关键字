@@ -1,0 +1,68 @@
+关键字是语言中预定义的、具有特殊含义的单词，它们在程序中有固定的用途和功能。
+
+1. 关键字概述
+关键字是一组固定名称的集合,这些名称被赋予了特定的意义,不能用作变量名、函数名或类名等标识符。
+plaintext
+['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield']
+
+2. 部分常用关键字的作用与用法
+(A) 条件控制关键字:IF, ELIF, ELSE
+用于根据条件执行不同的代码块。当条件为真时，执行对应的代码块；否则跳过或执行替代代码块。
+x = 10
+if x > 5:
+print("x 大于 5") # 如果条件成立则打印此消息
+else:
+print("x 不大于 5")
+此处展示了如何利用 if...else 结构进行分支处理3。
+
+(B) 循环结构关键字:FOR, WHILE
+for 用于遍历序列（如列表、元组、字符串）或其他可迭代对象。
+while 则基于布尔表达式的真假决定是否继续循环。
+示例一：使用 for 遍历列表
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+print(fruit)
+
+示例二：使用 while 执行计数操作
+i = 0
+while i < 3:
+print(i)
+i += 1
+
+函数定义关键字:DEF
+用来定义一个新的用户自定义函数。函数体由冒号后的缩进语句组成。
+def greet(name):
+"""向指定名字打招呼"""
+return f"Hello, {name}!"
+message = greet("Alice")
+print(message) # 输出: Hello, Alice!
+
+(D) 上下文管理关键字:WITH, AS
+with 能够简化资源管理和异常处理流程，常配合文件 I/O 或锁机制一起使用。它通过调用上下文管理器的 __enter__() 和 __exit__() 方法实现自动化清理工作。
+with open('example.txt', 'r') as file:
+content = file.read()
+print(content)
+print(file.closed) # 文件已关闭
+这里的 as 将打开的文件赋给变量 file,便于后续引用4。
+
+(E) 异常处理关键字:TRY, EXCEPT, FINALLY
+允许捕获并响应运行期间可能发生的错误情况。
+try:
+result = 1 / 0
+except ZeroDivisionError as e:
+print(f"发生错误: {e}")
+finally:
+print("无论成功与否都会执行 finally 块")
+
+3. 其他重要关键字说明
+关键字 描述
+class 定义新的类
+lambda 创建匿名函数
+global 声明全局变量
+nonlocal 声明嵌套作用域中的外部变量
+yield 生产器函数返回值
+
+4. 注意事项
+大小写敏感：所有关键字均区分大小写，例如 and 是合法关键字，而 And 或 AND 并非如此1。
+避免冲突：切勿将关键字当作普通标识符使用，以免引发语法错误。
+未来保留词:某些未使用的词汇可能是未来的候选关键字,应谨慎对待以防止兼容性问题1。
