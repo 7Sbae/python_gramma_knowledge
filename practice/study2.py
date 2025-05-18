@@ -1,20 +1,20 @@
-# jia_bing=["陈宇航","胡琛","墨泽"]
+# jia_bing=["cyh","hc","mz"]
 # print(jia_bing)
 # print("希望{}能与我共进晚餐".format(jia_bing[1]),sep='')
 # print(f"希望{jia_bing[0]}能与我共进晚餐",sep='')
 # print("希望jia_bing[2]能与我共进晚餐",sep='')
 # print(jia_bing[2],"不能与我共进晚餐")
-# jia_bing[2]="彭梓桐"
+# jia_bing[2]="pzt"
 # print(jia_bing)
-# jia_bing.append("悦")
-# jia_bing.insert(0,'懒羊羊')
-# jia_bing.insert(3,'蠢猪')
+# jia_bing.append("y")
+# jia_bing.insert(0,'lyy')
+# jia_bing.insert(3,'cz')
 # print(jia_bing)
 # print("我只能邀请两位来与我共进晚餐")
 # name1=jia_bing.pop()
 # name2=jia_bing.pop(1)
 # name3=jia_bing.pop(2)
-# jia_bing.remove("彭梓桐")
+# jia_bing.remove("pzt")
 # print(jia_bing)
 # del jia_bing[0]
 # print(jia_bing)
