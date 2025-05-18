@@ -1,3 +1,5 @@
+print("hellow would")
+
 # import math
 # a=1
 # b=9
@@ -17,7 +19,7 @@
 #     print("True")
 # else:
 #     print("False")
-# print("你好，懒洋洋")
+# print("hellow，lyy")
 
 # weight=float(input("体重:"))
 # height=float(input("身高:"))
@@ -70,7 +72,7 @@
 # print(min_price)
 # print(sorted_price)
 
-# slang_dict={"懒羊羊"and"悦":"蠢猪",
+# slang_dict={"lyy"and"y":"cz",
 #             "YYDS"and"yyds":"永远的神"}
 # slang_dict["双减"]="双休"
 # query=input("请输入：")
@@ -80,11 +82,11 @@
 # else:
 #     print("没有")
 #     print("当前收入本词典词条数为:"+str(len(slang_dict))+"条。")
-# print("悦=懒洋洋")
+# print("y=lyy")
 # print(slang_dict)
-#懒羊羊" and "悦"：
-# "懒羊羊" 是非空字符串，逻辑上为真。
-# 返回 "悦"，因此字典的键是 "悦"。
+#"lyy" and "y"：
+# "lyy" 是非空字符串，逻辑上为真。
+# 返回 "y"，因此字典的键是 "y"。
 # "YYDS" or "yyds"：
 # "YYDS" 是非空字符串，逻辑上为真。
 # 返回 "YYDS"，因此字典的键是 "YYDS"。
@@ -92,8 +94,8 @@
 # or：返回第一个真值，如果没有真值，则返回最后一个假值
 
 # slang_dict = {
-#     "懒羊羊": "蠢猪",
-#     "悦": "蠢猪",
+#     "lyy": "cz",
+#     "y": "cz",
 #     "YYDS": "永远的神",
 #     "yyds": "永远的神"
 # }
@@ -137,8 +139,8 @@ def draw_heart():
         plt.pause(0.001)  # 动态更新
     
     # 在爱心内部添加文字
-    ax.text(0, 0, "老妈", fontsize=20, color='red', ha='center')
-    ax.text(0, -5, '母亲节快乐', fontsize=20, color='red', ha='center')
+    ax.text(0, 0, "here add you need", fontsize=20, color='red', ha='center')
+    ax.text(0, -5, 'here add you need', fontsize=20, color='red', ha='center')
     plt.ioff()  # 关闭交互模式
     plt.show()
 
