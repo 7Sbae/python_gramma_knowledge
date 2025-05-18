@@ -1,4 +1,4 @@
-# name="悦"
+# name="y"
 # print(f"hello {name},woild you like to learn som PYthon today?")
 # name="chun zhu"
 # print(name.title())
@@ -12,7 +12,7 @@
 # print(favorite_language.lstrip())
 # nostarch_url='https://nostarch.com/'
 # nostarch_url.removeprefix('https://')
-# name1='墨泽'
+# name1='mz'
 # name2='alvert einstein'
 # print(f"{name2.title()} once said,'A person who never made a mistake never tried anything new.'")
 # print(name2.title()+" once said,'A person who never made a mistake never tried anything new.'")
