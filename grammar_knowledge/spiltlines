@@ -1,0 +1,29 @@
+splitlines() 是Python字符串的内置方法,用于按换行符分割多行字符串,返回包含各行内容的列表。其语法为:
+str.splitlines([keepends=False])
+其中,keepends 参数控制是否保留换行符(默认为False)。
+
+作用
+1、基本调用和访问跨平台换行符支持
+自动识别 \n(Unix)、\r(Mac旧版)、\r\n(Windows)等不同系统的换行符。
+
+2、智能空行处理
+若字符串以换行符结尾,splitlines() 不会生成多余的空字符串，而 split('\n') 会。
+text = "Hello\nWorld\n"
+print(text.splitlines())      # ['Hello', 'World']
+print(text.split('\n'))       # ['Hello', 'World', '']
+  
+3、保留换行符
+通过 keepends=True 可保留每行结尾的换行符。
+
+text = "Python\n支持多种换行符\r如\r\n这是测试"
+lines = text.splitlines()
+print(lines)  # 输出: ['Python', '支持多种换行符', '如', '这是测试']
+
+# 保留换行符
+lines_with_ends = text.splitlines(keepends=True)
+print(lines_with_ends)  # ['Python\n', '支持多种换行符\r', '如\r\n', '这是测试']
+
+与split()对比
+方法	            分隔符指定	换行符处理	末尾空行处理
+splitlines()	    自动识别	统一处理	自动过滤
+split('\n')	        需手动指定	仅识别\n	保留空字符串

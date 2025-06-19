@@ -1,0 +1,128 @@
+1. 定义
+__init__是Python类中的特殊方法(称为构造方法),用于初始化新创建的实例对象。其语法格式为:
+class 类名:
+    def __init__(self, 参数1, 参数2, ...):
+        # 初始化代码
+  
+self参数:指向实例自身,必须作为第一个参数显式声明1。
+其他参数：可选，用于接收外部传入的初始化值。
+
+2. 核心作用
+·初始化实例属性
+为对象的属性赋予初始值,例如:
+class Person:
+    def __init__(self, name, age):
+        self.name = name  # 定义实例属性
+        self.age = age
+  
+·创建对象时自动调用：
+p = Person("Alice", 30)  # 触发__init__
+  
+2、执行必要操作
+如打开文件、连接数据库等初始化动作：
+class FileHandler:
+    def __init__(self, filename):
+        self.file = open(filename, "r")
+
+3、参数传递
+允许通过实例化时的参数动态配置对象状态。
+
+3. 关键用法
+·继承中的__init__基本使用
+若未显式定义__init__,Python会调用默认的空构造方法。
+
+·带参数初始化
+参数需与实例化时传入值匹配：
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+rect = Rectangle(5, 10)  # 必须传入width和height
+  
+·继承中的__init__
+子类需显式调用父类构造方法：
+class Student(Person):
+    def __init__(self, name, age, student_id):
+        super().__init__(name, age)  # 调用父类__init__
+        self.student_id = student_id
+  
+4. 常见错误
+缺少self参数:导致实例化时报TypeError。
+参数不匹配:实例化时传入参数数量与__init__声明不一致。
+
+
+Python类中不使用__init__方法的影响及后果
+1. 默认行为
+若类未显式定义__init__方法,Python会调用其父类(通常是object类)的默认空构造方法1:   
+class MyClass:
+    pass
+
+obj = MyClass()  # 隐式调用object.__init__()
+此时实例化不会自动初始化任何属性，实例的初始状态完全为空。
+
+2. 主要影响
+1、无法直接初始化实例属性
+需通过其他方法手动添加属性，可能导致代码分散：
+class Person:
+    def set_info(self, name):
+        self.name = name  # 需手动调用
+
+p = Person()
+p.set_info("Alice")  # 若忘记调用，后续访问p.name会报错
+  
+2、实例化时无法传递参数
+若需动态配置对象属性，必须依赖额外方法或外部操作：
+class Rectangle:
+    pass
+
+rect = Rectangle()
+rect.width = 5  # 属性初始化分散在实例化后
+rect.height = 10
+  
+3、继承链中的潜在问题
+父类有__init__时:子类未定义__init__会默认调用父类的__init__,若父类需要参数但未传递会报错:
+class Parent:
+    def __init__(self, value):
+        self.value = value
+
+class Child(Parent):  # 未定义__init__
+    pass
+
+c = Child()  # 报错：Parent.__init__()缺少参数value[^3]
+父类无__init__时:可能导致子类初始化逻辑混乱。
+
+3. 适用场景
+在以下简单情况下可省略__init__:
+纯静态工具类：仅包含类方法或静态方法，无需实例状态。
+临时数据容器：属性动态添加，如：
+class DataBag:
+    pass
+
+bag = DataBag()
+bag.x = 10  # 动态绑定属性
+  
+4. 典型错误示例
+·访问未初始化的属性：
+class Logger:
+    def log(self, message):
+        print(f"{self.prefix}: {message}")  # self.prefix未定义
+
+logger = Logger()
+logger.log("test")  # 报错：AttributeError
+  
+·参数传递缺失（继承场景）：
+class Base:
+    def __init__(self, config):
+        self.config = config
+
+class Sub(Base):  # 未覆盖__init__
+    pass
+
+s = Sub()  # 报错：__init__()缺少参数config[^3]
+  
+5. 与__new__的关系
+若类中定义了__new__方法但未正确返回实例,\__init__可能不会被调用。
+class Broken:
+    def __new__(cls):
+        return "字符串"  # 返回非实例对象
+b = Broken()  # __init__未被触发

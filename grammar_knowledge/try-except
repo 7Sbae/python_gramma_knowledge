@@ -1,0 +1,62 @@
+一、基本定义
+try-except是Python异常处理的核心语法结构,用于捕获代码执行过程中可能出现的错误,避免程序直接崩溃。其核心逻辑是:尝试执行可能出错的代码,若发生异常则根据类型匹配处理逻辑3。
+
+二、完整语法结构
+try:
+    # 可能引发异常的代码块
+except ExceptionType1:
+    # 处理ExceptionType1类型异常
+except ExceptionType2 as e:
+    # 处理ExceptionType2类型异常，可获取异常对象e
+else:
+    # 无异常时执行的代码
+finally:
+    # 无论是否发生异常都会执行的代码（常用于资源清理）
+  
+三、使用场景与示例
+1、基础异常捕获
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("除数不能为零")
+输出结果：除数不能为零
+
+2、捕获多种异常
+try:
+    int("abc")  # 同时可能触发ValueError和TypeError
+except ValueError:
+    print("数值转换错误")
+except TypeError:
+    print("类型错误")
+  
+3、获取异常对象
+try:
+    open("non_existent_file.txt")
+except FileNotFoundError as e:
+    print(f"错误信息：{e.strerror}")  # 输出"错误信息：No such file or directory"
+  
+4、通用异常捕获
+try:
+    risky_operation()
+except Exception as e:  # 捕获所有非系统退出异常
+    print(f"发生未知错误：{type(e).__name__}")
+
+5、完整结构示例
+try:
+    file = open("data.txt", "r")
+    content = file.read()
+    number = int(content)
+except FileNotFoundError:
+    print("文件不存在")
+except ValueError:
+    print("内容无法转换为数字")
+else:
+    print(f"转换成功：{number}")
+finally:
+    file.close()  # 确保文件资源释放
+
+四、注意事项
+异常顺序:子类异常应放在父类异常之前捕获。例如ValueError应放在Exception之前
+过度捕获:避免使用空except:或过度宽泛的Exception,会掩盖潜在错误
+异常日志:建议使用logging模块记录异常详细信息
+性能影响:异常处理消耗较大,不应替代常规条件判断

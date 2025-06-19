@@ -1,0 +1,34 @@
+get() 是 Python 字典的内置方法，用于安全地获取字典中键对应的值。与直接使用 dict[key] 访问不同,当键不存在时,get() 不会引发 KeyError 异常，而是返回默认值(默认为 None)。
+
+定义语法
+dict.get(key, default=None)
+·key:要查找的键
+·default:可选参数,当键不存在时返回的值(默认 None)
+
+核心用法
+1、基础取值
+当键存在时返回对应值:
+person = {"name": "Alice", "age": 30}
+print(person.get("name"))  # 输出: Alice
+  
+2、处理键不存在
+避免 KeyError 异常:
+print(person.get("address"))         # 输出: None（无默认值）
+print(person.get("address", "N/A"))  # 输出: "N/A"（指定默认值）
+  
+3、链式安全访问
+嵌套字典时避免多层异常:
+data = {"user": {"profile": {"email": "a@example.com"}}}
+email = data.get("user", {}).get("profile", {}).get("email", "Unknown")
+# 任一中间键缺失均返回 "Unknown"
+
+与 dict[key] 的对比
+方法	          键存在时	 键不存在时
+dict[key]	      返回值	 引发 KeyError
+dict.get()	      返回值	 返回默认值/None
+
+应用场景
+配置项读取：读取可能缺失的配置参数
+数据清洗：处理 JSON 数据中可选字段
+API 响应处理：解析可能缺失的 API 字段
+引用说明:字典通过键对象实现快速值获取,且键必须是不可变类型(如整数、字符串)。

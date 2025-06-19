@@ -1,0 +1,28 @@
+1. 基本功能
+ord() 是 Python 的内置函数之一，主要用于获取单个字符对应的 Unicode 编码值。该函数接受一个字符串作为参数，并返回这个字符在 Unicode 表中的整数值3。
+
+2. 参数要求
+ord() 函数仅支持接收单一字符作为输入。如果传递了一个长度大于 1 的字符串，则会引发 TypeError 错误2。以下是错误示例:      
+print(ord('abc'))  # 抛出 TypeError: ord() expected a character, but string of length 3 found   
+因此，在调用此函数时需确保传入的是单个字符。
+
+3. 应用场景,可用于统计文本中特定字符的数量或频率1。
+数据清洗：利用 ord() 检测文本中的特殊字符（如控制字符、不可见字符）,从而实现更精确的数据清理操作1。
+例如，下面代码展示了如何判断某个字符是否属于可打印范围内的 ASCII 字符：
+char = ' '
+if 32 <= ord(char) <= 126:
+    print(f"'{char}' is printable.")
+else:
+    print(f"'{char}' is not printable.")
+       
+4. 配对函数 chr()
+为了便于转换,Python 提供了另一个内置函数 chr() 来完成相反的操作——即由 Unicode 整数值得到相应的字符两者配合使用非常方便。例如:           
+ascii_value = ord('a')  # 返回 97
+character = chr(ascii_value)  # 返回 'a'
+print(character)   
+对于中文或其他非 ASCII 字符同样适用：                  
+chinese_char = '你'
+unicode_value = ord(chinese_char)  # 返回 20320
+original_char = chr(unicode_value)  # 返回 '你'
+print(original_char)   
+以上例子表明无论是英文字母还是其他语言的文字都可以借助这两个函数相互转化。

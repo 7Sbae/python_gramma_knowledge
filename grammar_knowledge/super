@@ -1,0 +1,69 @@
+一、定义与作用
+super()是Python内置函数,用于调用父类(超类)的方法,尤其在多重继承场景中,能自动按方法解析顺序(MRO)选择正确的父类。其核心优势是避免硬编码父类名称,提升代码可维护性。
+
+优势:
+1、避免直接引用父类名称,增强代码可维护性
+2、带参数形式自动遵循方法解析顺序(Method Resolution Order, MRO)
+3、保留换行符支持多重继承场景下的协作式方法调用
+
+二、基础语法
+1、无参数形式(Python 3+推荐)
+super().method(args)
+自动绑定当前类和实例，适用于单继承。
+
+2、带参数形式
+super(ChildClass, self).method(args)
+显式指定子类和实例,兼容Python 2.x和复杂继承结构。
+
+语法形式	               适用场景	                    示例
+super().method()	       Python 3单继承	            super().__init__(a, b)
+super(C, self).method()	   Python 2/复杂继承结构	    super(Child, self).show()
+
+三、使用场景与示例
+1. 单继承中调用父类构造函数
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+class Dog(Animal):
+    def __init__(self, name, breed):
+        super().__init__(name)  # 调用Animal.__init__
+        self.breed = breed
+
+dog = Dog("Buddy", "Golden")
+print(dog.name)  # 输出：Buddy
+  
+2. 多重继承协调(MRO)
+class A:
+    def show(self):
+        print("A")
+
+class B(A):
+    def show(self):
+        super().show()  # 调用A.show
+        print("B")
+
+class C(A):
+    def show(self):
+        super().show()  # 调用A.show
+        print("C")
+
+class D(B, C):
+    def show(self):
+        super().show()  # 按MRO顺序调用B.show → C.show → A.show
+
+d = D()
+d.show()
+# 输出顺序：
+# A
+# C
+# B
+MRO顺序:通过D.__mro__可查看顺序(D, B, C, A, object)。
+
+四、注意事项
+1、Python 2/3差异
+Python 3中super()无参数等价于super(__class__, self),而Python 2需显式写参数。
+2、构造函数必须显式调用
+若子类定义了__init__,父类构造函数不会自动调用,必须通过super()触发。
+3、避免多重继承歧义
+设计时应遵循“菱形继承”规范，明确各父类职责。

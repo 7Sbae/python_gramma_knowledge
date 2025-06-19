@@ -1,0 +1,31 @@
+1. 基本定义
+列表推导式(List Comprehension)是一种简洁的方式,用于从现有数据结构生成新的列表。它的核心思想是从一个或多个可迭代对象中提取元素并对其进行变换或过滤2。
+
+2. 基础用法
+最简单的形式如下所示：  
+squares = [x**2 for x in range(10)]     
+这段代码的作用是生成一个包含前十个自然数平方的新列表4。
+
+3. 添加条件语句
+可以在列表推导式中加入条件来筛选符合条件的项。例如，只保留偶数的平方：          
+even_squares = [x**2 for x in range(10) if x % 2 == 0]         
+此处增加了 if x % 2 == 0 的条件判断部分2。
+
+4. 多重循环
+当需要组合来自不同序列的元素时，可以使用多重循环。比如将两个列表中的每一对元素配对起来：      
+letters = ['a', 'b']
+numbers = [1, 2]
+pairs = [(letter, number) for letter in letters for number in numbers]        
+这相当于两层嵌套for循环的结果[('a', 1), ('a', 2), ('b', 1), ('b', 2)]。
+
+5. 嵌套列表推导式
+对于复杂的二维或多维数组情况，可以通过嵌套的方式来处理内部子列表。例如展平一个多级列表：        
+matrix = [[1, 2], [3, 4]]
+flattened_matrix = [element for row in matrix for element in row]        
+这里先遍历矩阵每一行(row)，再进一步访问各行里的每一个元素(element)3。
+
+6. 数据清洗实例
+假设我们有一批日志记录，想要从中抽取某些特定字段或者去除空白条目等预处理工作也可以采用这种方式完成。假设有这样一份原始数据：           
+raw_data = [" apple ", "", "banana", None, " orange"]
+cleaned_data = [item.strip().upper() for item in raw_data if isinstance(item, str) and item.strip()]
+最终得到的是去除了多余空格并将所有字母转成大写的非空字符串组成的列表[“APPLE”,“BANANA”,“ORANGE”]。

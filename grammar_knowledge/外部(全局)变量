@@ -1,0 +1,80 @@
+Python类使用外部变量的方法和规则
+在Python中,类外部定义的变量（全局变量）可以在类内部使用，但需注意作用域规则和访问方式。以下是具体方法和规则：
+1. 直接访问全局变量
+在类的方法中,可以直接读取全局变量,但若需修改则需使用global声明:
+ global_var = 10  # 全局变量
+
+class MyClass:
+    def print_var(self):
+        print(global_var)  # 直接读取全局变量
+
+    def modify_var(self):
+        global global_var  # 声明全局变量
+        global_var = 20
+
+obj = MyClass()
+obj.print_var()  # 输出: 10
+obj.modify_var()
+print(global_var)  # 输出: 20
+规则：
+读取全局变量无需声明。
+修改全局变量需在方法内用global声明3。
+
+2. 通过类属性引用外部变量
+可以将外部变量赋值给类属性,便于统一管理:
+external_var = "Hello"
+
+class MyClass:
+    class_var = external_var  # 将外部变量绑定为类属性
+
+    def print_var(self):
+        print(self.class_var)  # 通过实例访问
+
+print(MyClass.class_var)  # 输出: Hello
+规则：
+类属性是静态的，所有实例共享同一值。
+若外部变量是可变对象(如列表),修改会影响所有实例1。
+
+3. 通过实例传递外部变量
+在实例化时，将外部变量作为参数传入:
+external_list = [1, 2, 3]
+
+class MyClass:
+    def __init__(self, data):
+        self.instance_var = data  # 外部变量绑定为实例属性
+
+    def modify_list(self):
+        self.instance_var.append(4)  # 修改实例属性
+
+obj = MyClass(external_list)
+obj.modify_list()
+print(external_list)  # 输出: [1, 2, 3, 4]
+规则：
+若传递的是可变对象（如列表、字典），类内部修改会影响原始变量。
+若传递不可变对象(如整数、字符串),需重新赋值才能修改3。
+
+4. 使用globals()函数动态访问
+通过globals()字典访问全局变量：
+global_var = 100
+
+class MyClass:
+    def get_var(self):
+        return globals()['global_var']  # 动态获取全局变量
+
+print(MyClass().get_var())  # 输出: 100
+注意事项：
+globals()返回当前模块的全局符号表。
+需确保变量名在全局作用域存在。
+
+关键区别总结
+访问方式	       是否需声明global	      是否影响原始变量	     适用场景
+直接访问全局变量	修改时需声明	       是	                 简单读取或全局配置
+类属性绑定	       否	                  是（若可变）	         共享数据或默认值
+实例传递	       否	                  是（若可变）	         需隔离或定制化数据
+globals()函数	   否	                 是	                    动态获取变量名不确定的情况
+
+最佳实践建议:
+避免滥用全局变量:优先通过参数传递或封装为类属性,提高代码可维护性。
+明确作用域:若需修改全局变量,显式使用global声明以避免歧义。
+区分可变与不可变对象：修改可变对象无需重新赋值，而不可变对象需重新绑定。
+

@@ -1,0 +1,62 @@
+globals()是一个内置函数,用于获取当前全局作用域中的所有变量和函数的字典形式表示。全局作用域指的是模块级别的命名空间,包含所有在该模块中定义的变量、函数和类。通过调用globals(),开发者可以动态访问或修改这些全局对象,这在调试或元编程场景中特别有用。该函数返回一个字典对象,其中键是变量或函数的名称(字符串),值是对应的对象引用。
+
+globals()函数的定义:它不接受任何参数,直接返回当前全局符号表的字典。全局符号表由Python解释器在运行时维护,包含了模块中所有全局定义的条目。例如:
+
+语法:globals() -> dict
+返回值:一个字典,键为名称,值为对象。如果在一个模块的顶层调用,它包含该模块的所有全局定义,如果在函数内部调用,它返回该模块的全局作用域，而非函数的局部作用域。
+
+globals()函数的使用方法
+使用globals()时，主要涉及调用函数、访问或修改字典内容。以下是逐步说明和代码示例：
+1、基本调用和访问:
+调用globals()返回字典后，可以通过键访问全局变量或函数。
+示例:定义一个全局变量和函数,然后使用globals()获取它们。
+# 定义全局变量和函数
+global_var = 10
+def global_func():
+    return "Hello, World!"
+
+# 调用globals()并访问内容
+global_dict = globals()
+print(global_dict['global_var'])  # 输出: 10
+print(global_dict['global_func']())  # 输出: Hello, World!
+在这个示例中,global_dict是一个字典,可以直接通过名称字符串操作全局对象。
+
+2、动态修改全局变量:
+globals()返回的字典是可变的，因此可以添加、更新或删除全局条目。
+示例：动态添加一个新全局变量。
+# 初始全局作用域
+print(globals().get('new_var'))  # 输出: None
+
+# 通过globals()添加变量
+globals()['new_var'] = 42
+print(new_var)  # 输出: 42
+这展示了如何在不直接赋值的情况下修改全局状态。
+
+3、在函数内部使用:
+在函数中调用globals()时,访问的是模块全局作用域,而非局部作用域。这与locals()函数不同。
+示例：对比全局和局部作用域。
+def test_function():
+    local_var = "local"
+    print("Globals in function:", 'global_var' in globals())  # 输出: True
+    print("Locals in function:", 'local_var' in locals())  # 输出: True
+
+test_function()
+这里,globals()在函数内部仍能访问模块级别的全局变量。
+
+4、与global语句的区别:
+·global语句用于声明函数内某个变量为全局变量,以便修改它,而globals()函数是获取整个全局字典。
+·示例:使用global声明后通过globals()验证。
+count = 0
+def increment():
+    global count  # 声明count为全局变量
+    count += 1
+    print(globals()['count'])  # 输出: 1
+
+increment()
+这说明了global语句如何配合globals()使用。
+
+注意事项和最佳实践
+·避免过度依赖:频繁修改全局字典会使代码难以维护和调试,可能导致命名冲突或意外副作用。推荐优先使用局部变量、函数参数或类来管理状态。
+·性能影响:globals()返回的是实时字典，频繁调用可能影响性能，尤其在大型项目中。
+·安全风险：动态修改全局变量可能引入安全漏洞，如在不安全环境中使用时应验证输入。
+·适用场景:globals()主要用于调试、动态代码生成（如元编程）或框架开发，而非日常编程。

@@ -1,0 +1,171 @@
+一、定义与核心作用
+super()是Python内置函数,用于调用父类(或兄弟类)的方法,尤其在继承体系中实现方法的链式调用。其核心优势是:
+避免直接引用父类名称，增强代码可维护性
+自动遵循方法解析顺序(Method Resolution Order, MRO)
+支持多重继承场景下的协作式方法调用
+
+二、基础语法形式
+语法形式	                适用场景	                 示例
+super().method()	        Python 3单继承	            super().__init__(a, b)
+super(C, self).method()	    Python 2/复杂继承结构	     super(Child, self).show()
+
+三、典型使用场景
+1. 初始化父类构造函数
+子类继承父类时，若需保留父类的初始化逻辑,必须显式调用super().__init__:         
+class Counter:
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+
+class CounterNew(Counter):
+    def __init__(self, a, b):
+        super().__init__(a, b)  # 继承父类初始化逻辑[^2]
+    
+    def mul(self):
+        return self.a * self.b
+              
+2. 扩展父类方法
+在子类方法中先执行父类逻辑，再添加新功能：     
+class Parent:
+    def show(self):
+        print("Parent method")
+
+class Child(Parent):
+    def show(self):
+        super().show()  # 先调用Parent.show()[^3]
+        print("Child method")
+
+3. 多重继承协调
+通过MRO确定调用顺序,以下示例展示菱形继承的调用链:              
+class A:
+    def process(self):
+        print("A")
+
+class B(A):
+    def process(self):
+        super().process()
+        print("B")
+
+class C(A):
+    def process(self):
+        super().process()
+        print("C")
+
+class D(B, C):
+    def process(self):
+        super().process()  # 调用顺序：B → C → A
+
+d = D()
+d.process()
+# 输出顺序：
+# A
+# C
+# B       
+可通过print(D.__mro__)查看具体顺序：(D, B, C, A, object)。
+
+四、注意事项
+Python版本差异
+Python 3中super()无需参数,Python 2需写为super(Child, self)
+构造函数必须显式调用
+若子类定义__init__,父类的构造函数不会自动执行,必须通过super()触发
+MRO冲突防范
+避免设计复杂的多重继承结构,若出现TypeError: Cannot create a consistent method resolution order错误,需调整类继承关系
+类方法与静态方法
+使用@classmethod时需传递类对象:super(Child, cls).method()
+
+
+一、MRO的定义与作用
+**方法解析顺序(Method Resolution Order, MRO)是Python中用于确定类继承关系中方法调用顺序的规则。其核心作用是:
+- 在多重继承场景下，解决方法的调用优先级问题
+- 确保继承关系中的方法调用路径唯一且无冲突
+- 遵循单调性(子类MRO不改变父类MRO顺序)和局部优先性（父类声明顺序影响调用优先级）
+
+二、MRO的发展历史
+| Python版本 | MRO算法        | 核心问题                    |
+|------------|----------------|---------------------------|
+| 2.2之前    | 深度优先搜索    | 违反单调性，导致继承关系混乱 |
+| 2.3及之后  | C3线性化算法    | 解决二义性继承结构问题      |
+
+C3算法通过以下公式定义类的MRO:
+L(C) = [C] + merge(L(P_1), L(P_2), ..., L(P_n), [P_1, P_2, ..., P_n])
+其中：
+- merge操作通过检查列表头部元素是否合法(不出现在其他列表尾部)来合并父类MRO
+- 若无法合并则抛出`TypeError`
+
+三、C3算法示例解析
+以经典菱形继承为例：
+class A:
+    def show(self):
+        print("A")
+
+class B(A):
+    def show(self):
+        print("B")
+
+class C(A):
+    def show(self):
+        print("C")
+
+class D(B, C):
+    pass
+
+print(D.__mro__)
+# 输出：<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <class 'object'>
+计算过程：
+1. L(D) = [D] + merge(L(B), L(C), [B, C])
+2. L(B) = [B, A, object]
+3. L(C) = [C, A, object]
+4. 合并顺序:先取B,再取C,最后A
+
+四、查看MRO的三种方法
+1. 通过__mro__属性:
+print(D.__mro__)
+2. 使用mro()方法：
+print(D.mro())
+3. 借助inspect模块:
+import inspect
+print(inspect.getmro(D))
+
+五、关键注意事项
+1. 继承顺序敏感  
+   类的声明顺序直接影响MRO:
+   class D(C, B):  # MRO变为D → C → B → A → object
+       pass
+
+2. **冲突检测机制**  
+   当出现无法线性化的继承结构时,Python会抛出错误:
+   class X: pass
+   class Y: pass
+   class A(X, Y): pass
+   class B(Y, X): pass
+   class Z(A, B): pass  # 触发TypeError
+
+3. super()与MRO的关系
+   super()的实际跳转目标由MRO决定,而非父类声明顺序:
+   class Base:
+       def test(self):
+           print("Base")
+
+   class Mixin1(Base):
+       def test(self):
+           super().test()
+           print("Mixin1")
+
+   class Mixin2(Base):
+       def test(self):
+           super().test()
+           print("Mixin2")
+
+   class Combined(Mixin1, Mixin2):
+       pass
+
+   Combined().test()
+   # 输出顺序：
+   # Base
+   # Mixin2
+   # Mixin1
+
+六、MRO的数学验证
+对于类$C$及其父类$B_1, B_2,...,B_n$,C3算法需满足:
+\forall i < j,\quad B_i \notin tail(L(B_j))#∀i<j,Bi∈/tail(L(Bj))
+其中$tail(L)$表示列表中除第一个元素外的所有元素。这保证了MRO的单调性。
